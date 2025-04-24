@@ -14,9 +14,45 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
+    <style>
+      .dark-mode {
+        background-color: #121212 !important;
+      }
+
+      .toggle-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        background-color: white;
+      }
+
+      .dark-mode .toggle-btn {
+        background-color: #121212;
+      }
+
+      .dark-mode .wave-path,
+      footer {
+        background-color: #2c2c2c;
+        fill: #2c2c2c;
+      }
+
+      .dark-mode h1.title,
+      .dark-mode .card-title,
+      .dark-mode .card a.text-dark,
+      .dark-mode .card-text small {
+        color: white !important;
+      }
+
+      .dark-mode .card {
+        background-color: #2c2c2c;
+        color: #fff;
+      }
+    </style>
   </head>
 
-  <body>
+  <body onload="startTime()">
     <!-- Header -->
     <nav
       style="background-color: #eaebff"
@@ -67,6 +103,9 @@
             </li>
           </ul>
         </div>
+
+        <!-- Darkmode -->
+        <button id="toggleMode" class="toggle-btn ms-3">🌙</button>
       </div>
     </nav>
 
@@ -86,6 +125,10 @@
               This is a website for learning Bootstrap Framework.
               <br />Created by Lutfiyadi Afandi.
             </p>
+            <p class="fs-5 fw-normal d-flex flex-column">
+              <span id="date"></span>
+              <span id="time"></span>
+            </p>
             <button
               type="button"
               class="btn btn-outline-dark btn-lg fw-semibold w-25"
@@ -99,18 +142,24 @@
         </div>
       </div>
 
-      <img
-        src="/img/waves.svg"
-        alt="wave"
-        class="position-absolute w-100"
-        style="bottom: -115px; right: 0; background-color: #eaebff"
-      />
+      <svg
+        class="wave position-absolute w-100 d-none d-xl-block"
+        style="bottom: -335px; right: 0"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+      >
+        <path
+          fill="#eaebff"
+          fill-opacity="1"
+          d="M0,0L48,21.3C96,43,192,85,288,101.3C384,117,480,107,576,90.7C672,75,768,53,864,58.7C960,64,1056,96,1152,133.3C1248,171,1344,213,1392,234.7L1440,256L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+        ></path>
+      </svg>
     </section>
 
     <!-- Article Section -->
-    <section id="article" style="padding-top: 75px">
+    <section id="article" style="padding-top: 175px">
       <div class="container py-5 text-center">
-        <h1 class="display-5 fw-bold">Article</h1>
+        <h1 class="display-5 fw-bold title">Article</h1>
         <article class="row g-4 justify-content-center mt-5">
           <div class="col-12 col-md-6 col-lg-3">
             <div class="card h-100">
@@ -230,7 +279,7 @@
     <!-- Gallery Section -->
     <section id="gallery" style="padding-top: 75px">
       <div class="container py-5 text-center">
-        <h1 class="display-5 fw-bold">Gallery</h1>
+        <h1 class="display-5 fw-bold title">Gallery</h1>
         <div
           id="carouselExampleInterval"
           class="carousel slide mt-5"
@@ -291,7 +340,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="text-white py-4 mt-5">
       <div
         class="container d-flex flex-column flex-md-row justify-content-between align-items-center"
       >
@@ -313,5 +362,65 @@
       integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
       crossorigin="anonymous"
     ></script>
+    <script>
+      // Date
+      const now = new Date();
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const date = `${days[now.getDay()]}, ${now.getDate()} ${
+        months[now.getMonth()]
+      } ${now.getFullYear()}`;
+      document.getElementById("date").innerHTML = date;
+
+      // Clock
+      function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+      }
+      function checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+
+      // Dark Mode
+      const toggleBtn = document.getElementById("toggleMode");
+      const body = document.body;
+
+      toggleBtn.addEventListener("click", function () {
+        body.classList.toggle("dark-mode");
+        toggleBtn.innerHTML = body.classList.contains("dark-mode")
+          ? "☀️"
+          : "🌙";
+      });
+    </script>
   </body>
 </html>
